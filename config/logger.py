@@ -3,8 +3,8 @@
 
 
 class Logger_custom:
-	def __init__(self):
-		pass
+	def __init__(self, actual_time):
+		self.actual_time = actual_time
 
 	def msg(self, level, message):
 		from config.colors import lcyan, lyellow, lred, lblack, white
@@ -16,5 +16,5 @@ class Logger_custom:
 		level_color = level_color_dict.get(level)
 		level_formatt = f'{level_color}{level}'
 
-		output_message = "{2}[ {0} {2}] {3}{1}".format(level_formatt, message, lblack, white)
+		output_message = "{2}({4}) [ {0} {2}] {3}{1}".format(level_formatt, message, lblack, white, self.actual_time)
 		return print(output_message)

@@ -16,11 +16,13 @@ log = logging.getLogger('discord')
 log.setLevel(logging.WARNING)
 
 # - Personal logger - #
-logger = Logger_custom()
+actual_time = datetime.datetime.now().strftime('%H:%M:%S %p')
+logger = Logger_custom(actual_time)
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('(%(asctime)s) > [%(levelname)s]: %(message)s'))
 log.addHandler(handler)
+
 
 # - Commands - #
 @bot.command()
@@ -29,18 +31,14 @@ async def ping(ctx): #parse a context, async for not waiting bot proccess
 
 
 @bot.command()
-async def stats(ctx):
-	embed = discord.Embed(title=f"{ctx.guild.name}'s stats", 
-						 description='',
-						 timestamp=datetime.datetime.utcnow(),
-						 color=discord.Color.red())
+async def stats2(ctx):
+	stats_string = f"""```
+	[Server created at] => {ctx.guild.created_at}
+	[Owner]             => {ctx.guild.owner}
+	[SERVER_ID]         => {ctx.guild.id}
+	```"""
 
-	embed.add_field(name='Server created at', value=f'{ctx.guild.created_at}')
-	embed.add_field(name='Owner', value=f'{ctx.guild.owner}')
-	embed.add_field(name='ID', value=f'{ctx.guild.id}')
-	embed.set_thumbnail(url='https://i.redd.it/eodhd6p0fz051.jpg')
-
-	await ctx.send(embed=embed)
+	await ctx.send(stats_string)
 
 
 @bot.command()
@@ -54,14 +52,9 @@ async def yt(ctx, *, search):
 
 # - Other functions - #
 def read_token(filename='../token.txt'): #1. REPLACE WITH YOUR TOKEN DIRECTORY
-	try:
-		token = open(filename).read()
+	token = open(filename).read()
+	return token
 
-	except IOError:
-		exit(logger.msg('ERROR', 'token file not found'))
-
-	else:
-		return token
 
 # - Events - # 
 @bot.event
@@ -69,9 +62,14 @@ async def on_ready():
 	logger.msg('INFO', 'bot started succesfully')
 
 
-bot.run(read_token()) #2. OR REPLACE WITH THE ACTUAL TOKEN STRING INSTEAD OF READ_TOKEN FUNC
+@bot.event
+async def on_connect():
+	logger.msg('INFO', f'logged in as {bot.user.name} ID:{bot.user.id}')
 
 
-#Must write a function to get mc servers info by calling apis, minehut etc.
-#in the other hand, without an api it must be written by hand doing a
-#port scan with nmap or just raw sockets
+if __name__ == '__main__':
+	try:
+		bot.run(read_token()) #2. OR REPLACE WITH THE ACTUAL TOKEN STRING INSTEAD OF READ_TOKEN FUNC
+
+	except IOError:
+		exit(logger.msg('ERROR', 'token file not found'))

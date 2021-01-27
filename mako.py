@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 #-*- coding:utf-8 -*-
 
-import datetime
 import requests
 import discord
 import logging
@@ -17,8 +16,7 @@ log = logging.getLogger('discord')
 log.setLevel(logging.WARNING)
 
 # - Personal logger - #
-actual_time = datetime.datetime.now().strftime('%H:%M:%S %p')
-logger = Logger_custom(actual_time)
+logger = Logger_custom()
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('(%(asctime)s) > [%(levelname)s]: %(message)s'))

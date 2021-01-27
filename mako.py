@@ -2,6 +2,7 @@
 #-*- coding:utf-8 -*-
 
 import datetime
+import requests
 import discord
 import logging
 import re
@@ -31,11 +32,14 @@ async def ping(ctx): #parse a context, async for not waiting bot proccess
 
 
 @bot.command()
-async def stats2(ctx):
-	stats_string = f"""```
+async def stats(ctx):
+	stats_string = f"""```css
+	> {ctx.guild.name}'s stats
+	I=================================================I
 	[Server created at] => {ctx.guild.created_at}
-	[Owner]             => {ctx.guild.owner}
+	[Owner]             => nick.sh
 	[SERVER_ID]         => {ctx.guild.id}
+	I=================================================I
 	```"""
 
 	await ctx.send(stats_string)
@@ -50,10 +54,42 @@ async def yt(ctx, *, search):
 	await ctx.send('https://www.youtube.com/watch?v=' + youtube_results[0])
 
 
+@bot.command()
+async def mc(ctx, server):
+	mc_info = request_api('https://api.minehut.com/server/', server, byname=0) #Minehut api request
+	try:
+		if mc_info['ok'] == False:
+			error = """```css
+			[request failed with api.minehut.com]```"""	
+			await ctx.send(error)
+
+	except KeyError:
+		server_motd = str(mc_info['server']['motd'])
+		server_online = str(mc_info['server']['playerCount'])
+
+		response = f"""```css
+					[{server_motd:^10}]
+					I===========================================================I
+					Online players : {server_online}
+					I===========================================================I
+					```"""
+
+		await ctx.send(response)
+
+
 # - Other functions - #
 def read_token(filename='../token.txt'): #1. REPLACE WITH YOUR TOKEN DIRECTORY
 	token = open(filename).read()
 	return token
+
+
+def request_api(url, arg, byname=1):
+	keyword = ['?byName=true', '']
+
+	request = requests.get(url + arg + keyword[byname])
+	json_response = request.json()
+
+	return json_response
 
 
 # - Events - # 

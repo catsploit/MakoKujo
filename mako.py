@@ -7,6 +7,7 @@ import logging
 
 from config.command.mc import mc_minehutscan
 from config.command.yt import youtube_search
+from config.command.statsc import statsfunc
 
 from config.logger import Logger_custom
 from discord.ext import commands
@@ -45,17 +46,18 @@ async def ping(ctx): #parse a context, async for not waiting bot proccess
 
 @bot.command()
 async def stats(ctx):
-	stats_string = f"""```css
-	> {ctx.guild.name}'s stats
-	I=================================================I
-	[Server created at] => {ctx.guild.created_at.strftime('%H:%M:%S %p')}
-	[Members]           => {len([m for m in ctx.guild.members if not m.bot])}
-	[Owner]             => {ctx.guild.owner}
-	[SERVER_ID]         => {ctx.guild.id}
-	I=================================================I
-	```"""
+	#stats_string = f"""```css
+	#> {ctx.guild.name}'s stats
+	#I=================================================I
+	#[Server created at] => {ctx.guild.created_at.strftime('%H:%M:%S %p')}
+	#[Members]           => {len([m for m in ctx.guild.members if not m.bot])}
+	#[Owner]             => {ctx.guild.owner}
+	#[SERVER_ID]         => {ctx.guild.id}
+	#I=================================================I
+	#```"""
+	stadistics = statsfunc(ctx)
 
-	await ctx.send(stats_string)
+	await ctx.send(stadistics)
 
 
 @bot.command()

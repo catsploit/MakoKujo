@@ -7,11 +7,9 @@ import datetime
 
 class Logger_custom:
 	def __init__(self):
-		#self.actual_time = actual_time
 		pass
 
 	def msg(self, level, message):
-		#from config.colors import lcyan, lyellow, lred, lblack, white
 		actual_time = datetime.datetime.now().strftime('%H:%M:%S %p')
 
 		level_color_dict = {'INFO': lcyan,

@@ -5,8 +5,8 @@ import requests
 import discord
 import logging
 
-from config.commands.mc import mc_minehutscan
-from config.commands.yt import youtube_search
+from config.command.mc import mc_minehutscan
+from config.command.yt import youtube_search
 
 from config.logger import Logger_custom
 from discord.ext import commands
@@ -20,9 +20,14 @@ log = logging.getLogger('discord')
 log.setLevel(logging.WARNING)
 
 # - ch. Aliasses - #
-general = "¥-𝙜𝙚𝙣𝙚𝙧𝙖𝙡-¥"
-commands = "ß-𝙘𝙤𝙢𝙖𝙣𝙙𝙤𝙨-ß" 
-testing  = "testing-chat"
+commands_ch = 803839934221910027 
+testing  = 795043467441078282
+general = 794760572520103941
+
+# - role aliasses - #
+owner = 794767681186037822
+bots = 794846163517308939
+mod = 794775883986632715
 
 # - Personal logger - #
 logger = Logger_custom()
@@ -60,7 +65,7 @@ async def yt(ctx, *, search):
 
 
 @bot.command()
-async def mc(ctx, server, channels=[commands, testing, general]):
+async def mc(ctx, server, channels=[commands_ch, testing, general]):
 	if str(ctx.channel) in channels:
 		mc_info = request_api('https://api.minehut.com/server/', server, byname=0)
 
@@ -72,6 +77,24 @@ async def mc(ctx, server, channels=[commands, testing, general]):
 		except KeyError:
 			results = mc_minehutscan(mc_info)
 			await ctx.send(results[0])
+
+
+@bot.command()
+@commands.has_role(owner)
+async def mute(ctx, member : discord.Member):
+	muted = ctx.guild.get_role(804582396661202944)
+
+	await member.add_roles(muted)
+	await ctx.send(f'**{member}** has been _muted_ by **{ctx.message.author}**')
+
+
+@bot.command()
+@commands.has_role(owner)
+async def unmute(ctx, member : discord.Member):
+	muted = ctx.guild.get_role(804582396661202944)
+
+	await member.remove_roles(muted)
+	await ctx.send(f'**{member}** has been _unmuted_ by **{ctx.message.author}**')
 
 
 # - Other functions - #
@@ -86,7 +109,6 @@ def request_api(url, arg, byname=1):
 	request = requests.get(url + arg + keyword[byname])
 	json_response = request.json()
 	return json_response
-
 
 # - Events - # 
 @bot.event

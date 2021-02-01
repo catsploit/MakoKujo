@@ -19,7 +19,7 @@ class Mute(commands.Cog):
 
 		# Log
 		await ctx.send(f'**{member}** has been _muted_ by **{ctx.message.author}**')
-		await ctx.invoke(self.bot.get_command('log'), why=reason, action=type(self).__name__)
+		await ctx.invoke(self.bot.get_command('log'), to=member, why=reason, action=type(self).__name__)
 
 
 	@commands.command()

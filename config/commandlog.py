@@ -12,14 +12,15 @@ class CommandLog(commands.Cog):
 	
 	@commands.command()
 	@commands.has_role(getvalue()['rol_aliasses']['bots'])
-	async def log(self, ctx, *, why, action): 
+	async def log(self, ctx, *, to, why, action): 
 		channel = self.bot.get_channel(self.auditory)
 		await channel.send(f"""```css
 							> Infraction
-							I====================I
-							[Action] => {action}
-							[Author] => {ctx.message.author}
-							[Reason] => {why}
+							I======================I
+							[Action]   => {action}
+							[Affected] => {to}
+							[Author]   => {ctx.message.author}
+							[Reason]   => {why}
 							```""")
 
 def setup(bot):

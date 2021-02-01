@@ -4,15 +4,18 @@
 import requests
 import discord
 import logging
+import sys
 
+from config.functions.environment import setenvironment
+from config.command.statsc import statsfunc
 from config.command.mc import mc_minehutscan
 from config.command.yt import youtube_search
-from config.command.statsc import statsfunc
 
 from config.logger import Logger_custom
 from discord.ext import commands
 
-# - Setting up - #
+## Setting up
+mod_auditory, commands_ch, testing, general, owner, muted, bots, mod = setenvironment()
 intents = discord.Intents.default() #ACTIVATE SERVER MEMBERS INTENT IN YOUR BOT
 intents.members = True
 
@@ -20,15 +23,9 @@ bot = commands.Bot(command_prefix='.', description='Community bot made by @catsp
 log = logging.getLogger('discord')
 log.setLevel(logging.WARNING)
 
-# - ch. Aliasses - #
-commands_ch = 803839934221910027 
-testing  = 795043467441078282
-general = 794760572520103941
-
-# - role aliasses - #
-owner = 794767681186037822
-bots = 794846163517308939
-mod = 794775883986632715
+# - Import external commands - #
+bot.load_extension('config.command.mod.mute')
+bot.load_extension('config.commandlog')
 
 # - Personal logger - #
 logger = Logger_custom()
@@ -46,17 +43,7 @@ async def ping(ctx): #parse a context, async for not waiting bot proccess
 
 @bot.command()
 async def stats(ctx):
-	#stats_string = f"""```css
-	#> {ctx.guild.name}'s stats
-	#I=================================================I
-	#[Server created at] => {ctx.guild.created_at.strftime('%H:%M:%S %p')}
-	#[Members]           => {len([m for m in ctx.guild.members if not m.bot])}
-	#[Owner]             => {ctx.guild.owner}
-	#[SERVER_ID]         => {ctx.guild.id}
-	#I=================================================I
-	#```"""
 	stadistics = statsfunc(ctx)
-
 	await ctx.send(stadistics)
 
 
@@ -81,24 +68,6 @@ async def mc(ctx, server, channels=[commands_ch, testing, general]):
 			await ctx.send(results[0])
 
 
-@bot.command()
-@commands.has_role(owner)
-async def mute(ctx, member : discord.Member):
-	muted = ctx.guild.get_role(804582396661202944)
-
-	await member.add_roles(muted)
-	await ctx.send(f'**{member}** has been _muted_ by **{ctx.message.author}**')
-
-
-@bot.command()
-@commands.has_role(owner)
-async def unmute(ctx, member : discord.Member):
-	muted = ctx.guild.get_role(804582396661202944)
-
-	await member.remove_roles(muted)
-	await ctx.send(f'**{member}** has been _unmuted_ by **{ctx.message.author}**')
-
-
 # - Other functions - #
 def read_token(filename='../token.txt'): #1. REPLACE WITH YOUR TOKEN DIRECTORY
 	token = open(filename).read()
@@ -111,6 +80,7 @@ def request_api(url, arg, byname=1):
 	request = requests.get(url + arg + keyword[byname])
 	json_response = request.json()
 	return json_response
+
 
 # - Events - # 
 @bot.event

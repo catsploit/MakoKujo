@@ -3,7 +3,7 @@
 
 from discord.ext import commands
 from discord.member import Member
-from config.commandlog import CommandLog
+from config.logevents.commandlog import CommandLog
 from config.functions.getenvvalue import getvalue
 
 

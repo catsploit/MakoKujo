@@ -6,7 +6,7 @@ import discord
 import logging
 
 from config.functions.environment import setenvironment
-from config.logger import Logger_custom
+from config.logevents.logger import Logger_custom
 from discord.ext import commands
 
 ## Setting up
@@ -20,10 +20,10 @@ log.setLevel(logging.WARNING)
 
 # - Import external commands - #
 bot.load_extension('config.command.specialties.specialties')
+bot.load_extension('config.logevents.commandlog')
 bot.load_extension('config.command.mod.mute')
 bot.load_extension('config.command.fun.fun')
 bot.load_extension('config.command.mc.mc')
-bot.load_extension('config.commandlog')
 
 # - Personal logger - #
 logger = Logger_custom()
@@ -31,7 +31,6 @@ logger = Logger_custom()
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('(%(asctime)s) > [%(levelname)s]: %(message)s'))
 log.addHandler(handler)
-
 
 
 # - Other functions - #

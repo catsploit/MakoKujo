@@ -9,30 +9,32 @@ import requests
 class Mc(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.chn = getvalue()['channel_aliasses']['commands_ch']
+		self.chn = getvalue()['channel_aliasses']['commands_ch'] 
 
 
 	@commands.command()
 	async def mc(self, ctx, server):
 		if ctx.channel.id == self.chn:
 			mc_info = Mc.request_api(api='https://api.minehut.com/server/', arg=server, keywrd=1)
-			if mc_info.get('ok') != None:
-				ctx.send(Mc.minehutscan(mc_info))
+			if mc_info.get('ok') == None:
+				await ctx.send(Mc.minehutscan(mc_info))
 
 			else:
 				await ctx.send('**Error: server not found in api.minehut**')
 
 
 	@staticmethod
-	def request_api(api, arg, keywrd : int):
+	def request_api(api, arg, keywrd=0):
 		keyword = ['', '?byName=true']
-		with session.get(api + arg + keyword[keywrd]) as response:
+		with requests.get(api + arg + keyword[keywrd]) as response:
 			return response.json()
+
+
 
 
 	@classmethod
 	def minehutscan(cls, json):
-		fields = mc_info['server']
+		fields = json['server']
 
 		activity = str(fields['online'])
 		backups = str(fields['backup_slots'])

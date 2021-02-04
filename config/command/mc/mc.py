@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #-*- coding:utf-8 -*-
 
-from config.functions.getenvvalue import getvalue
+from config.functions.getValue import getvalue
 from discord.ext import commands
 import requests
 

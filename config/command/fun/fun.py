@@ -2,6 +2,7 @@
 #-*- coding:utf-8 -*-
 
 from urllib import request, parse
+from NHentai import NHentai
 from discord.ext import commands
 import re
 
@@ -19,6 +20,14 @@ class Fun(commands.Cog):
 
 		await ctx.send(f'https://www.youtube.com/watch?v={results[0]}')
 
+
+
+	#@commands.is_nsfw()
+	@commands.command()
+	async def nhentai(self, ctx, *, search : str):
+		nhentai = NHentai()
+		search_obj = nhentai.search(query=search, sort='popular', page=1)
+		await ctx.send(str(search_obj))
 
 
 def setup(bot):

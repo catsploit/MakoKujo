@@ -3,8 +3,8 @@
 
 from discord.ext import commands
 from discord.member import Member
-from config.logevents.commandlog import CommandLog
-from config.functions.getenvvalue import getvalue
+from config.functions.getValue import getvalue
+from config.logManager.commandLog import CommandLog
 
 
 class Mute(commands.Cog):

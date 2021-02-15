@@ -9,7 +9,9 @@ class LoggerHandler:
 	def __init__(self):
 		pass
 
-	def msg(self, level, message):
+
+	@staticmethod
+	def msg(level, message):
 		timestamp = datetime.datetime.now().strftime('%H:%M:%S %p')
 		levelstatus = {'INFO': lcyan,
 					   'WARN': lyellow,

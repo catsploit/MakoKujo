@@ -7,6 +7,7 @@ from discord.ext import commands
 import discord
 import re
 
+from config.logManager.logger import LoggerHandler
 
 class Fun(commands.Cog):
 	def __init__(self, bot):
@@ -36,14 +37,15 @@ class Fun(commands.Cog):
 		nhentai = NHentai()
 		if not search.isnumeric():
 			douj = nhentai.search(query=search, sort='popular', page=1)
-			if douj.total_results == 0:
-				raise commands.BadArgument
-
 			search = douj.doujins[0].id
 
-		douj = nhentai._get_doujin(id=str(search))
-		if douj is None:
-			raise commands.BadArgument
+		# Replace empty list cause they break embed func
+		# Gotta find a more pythonic way to do this tho, THIS EMBED THING WAS PAIN
+		douj = nhentai._get_doujin(id=search)
+		for field in [a for a in dir(douj) if not a.startswith('__')]:
+			attr = getattr(douj, field)
+			if not attr:
+				setattr(douj, field, 'empty')
 
 		embed = discord.Embed(title=f'{douj.title}', 
 			                  url=f'https://nhentai.net/g/{douj.id}',
@@ -60,6 +62,21 @@ class Fun(commands.Cog):
 		embed.set_thumbnail(url=douj.images[0])
 
 		await ctx.send(embed=embed)
+
+
+	##Local Handlers
+	@search.error
+	async def nhentai_handler(self, ctx, error):
+		error = getattr(error, 'original', error)
+
+		if isinstance(error, discord.HTTPException):
+			await ctx.send('Error while formatting embed, call a dev')
+
+		elif isinstance(error, IndexError):
+			await ctx.send('Sauce not found :(')
+
+		else:
+			LoggerHandler.msg('WARN', f'Exception raised in "nhentai" branch: {error}')
 
 
 def setup(bot):

@@ -16,8 +16,16 @@ class commandErrorHandler(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
-		channel = ctx.message.channel
+		if hasattr(ctx.command, 'on_error'):
+			return
+
+		command = ctx.cog 
+		if command:
+			if command._get_overridden_method(command.cog_command_error):
+				return
+
 		ignored = (commands.CommandNotFound, )
+		error = getattr(error, 'original', error)
 
 		if isinstance(error, ignored):
 			return

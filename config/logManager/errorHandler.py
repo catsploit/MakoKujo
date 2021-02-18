@@ -36,6 +36,9 @@ class commandErrorHandler(commands.Cog):
 		elif isinstance(error, commands.BadArgument):
 			await ctx.send('Could not find that sorry :(')
 
+		elif isinstance(error, commands.errors.NSFWChannelRequired):
+			await ctx.send('Use this in NSFW channels you fucking pervert')
+
 		else:
 			LoggerHandler.msg('WARN', f'Exception raised in command "{ctx.command}" ({error}):')
 			traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)

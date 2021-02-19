@@ -24,7 +24,7 @@ class commandErrorHandler(commands.Cog):
 			if command._get_overridden_method(command.cog_command_error):
 				return
 
-		ignored = (commands.CommandNotFound, )
+		ignored = (commands.CommandNotFound, commands.MissingPermissions)
 		error = getattr(error, 'original', error)
 
 		if isinstance(error, ignored):

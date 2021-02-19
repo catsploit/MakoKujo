@@ -10,12 +10,15 @@ intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix='.', description='Community bot made by @catsploit', intents=intents)
+bot.remove_command('help')
 
 # SET UP HANDLERS
 bot.load_extension('config.logManager.commandLog')
 bot.load_extension('config.logManager.errorHandler')
 bot.load_extension('config.eventHandler')
 
+
+# ADD COGS
 for filename in os.listdir('config/command/'):
 	for module in os.listdir(f'config/command/{filename}'):
 		if module.endswith('.py'):

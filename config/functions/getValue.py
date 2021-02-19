@@ -2,7 +2,6 @@
 #-*- coding:utf-8 -*-
 
 import json
-import pickle
 
 def getvalue():
 	with open('config/environment.json') as file:

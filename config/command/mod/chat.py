@@ -10,9 +10,11 @@ class Chat(commands.Cog):
 		self.bot = bot
 
 
-	#@commands.has_permissions(manage_messages=True)
+	@commands.has_permissions(manage_messages=True)
 	@commands.command()
 	async def clear(self, ctx, amount : int):
+		"""MODS ONLY: .clear <amount> (clean <amount> messages)"""
+		
 		await ctx.channel.purge(limit=amount)
 
 

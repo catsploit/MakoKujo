@@ -14,6 +14,8 @@ class Mute(commands.Cog):
 	@commands.command()
 	@commands.has_permissions(kick_members=True)
 	async def mute(self, ctx, member : Member, reason='no specified'):
+		"""MODS ONLY: .mute <user> <reason(optional)>"""
+
 		mute = ctx.guild.get_role(getvalue()['rol_aliasses']['muted'])
 		await member.add_roles(mute)
 
@@ -25,6 +27,8 @@ class Mute(commands.Cog):
 	@commands.command()
 	@commands.has_permissions(kick_members=True)
 	async def unmute(self, ctx, member : Member):
+		"""MODS ONLY: .unmute <user>"""
+
 		mute = ctx.guild.get_role(getvalue()['rol_aliasses']['muted'])
 		await member.remove_roles(mute)
 

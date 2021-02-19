@@ -14,6 +14,8 @@ class Mc(commands.Cog):
 
 	@commands.command()
 	async def mc(self, ctx, server):
+		"""usage: .mc <hostname/ip> (request minehut api)"""
+		
 		if ctx.channel.id == self.chn:
 			mc_info = Mc.request_api(api='https://api.minehut.com/server/', arg=server, keywrd=1)
 			if mc_info.get('ok') == None:

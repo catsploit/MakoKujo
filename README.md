@@ -22,6 +22,10 @@ file and rewrite the function `read_token()` in `mako.py`, then link it to your 
 
 2. Or you can rewrite `bot.run(TOKEN)` in `mako.py` with your token string.
 
+## ***@Configuration***
+Before running the bot, you need to set-up your mod roles, actions auditory and channels ID.
+This can be done by modifing `config/environment.json`, replacing each field with their ID
+according to your server.
 
 
 ## ***@IMPORTANT***
@@ -38,3 +42,4 @@ pip3 install dataclasses
 ## ***@3rd party codes***
 
 [NHentai-API](https://github.com/AlexandreSenpai/NHentai-API)
+[Error Handler](https://gist.github.com/EvieePy/7822af90858ef65012ea500bcecf1612) Thx to EvieePy, this code saved my life
